@@ -7,7 +7,7 @@ const IngredientForm = React.memo(props => {
   // inputState is in the end an array with exactly two elements
   // first element is a snapshot of the current state
   // second element is a function tha allows to update the state
-  const inputState = useState({
+  const [inputState, setInputState] = useState({
     title: '',
     amount: ''
   });
@@ -31,11 +31,11 @@ const IngredientForm = React.memo(props => {
             <input
               type="text"
               id="title"
-              value={inputState[0].title}
+              value={inputState.title}
               onChange={event => {
                 const newTitle = event.target.value;
                 // prevInputState guaranteed holds the last state
-                inputState[1](prevInputState => ({
+                setInputState(prevInputState => ({
                   title: newTitle,
                   amount: prevInputState.amount
                 }))
@@ -48,10 +48,10 @@ const IngredientForm = React.memo(props => {
             <input
               type="number"
               id="amount"
-              value={inputState[0].amount}
+              value={inputState.amount}
               onChange={event => {
                 const newAmount = event.target.value;
-                inputState[1](prevInputState => ({
+                setInputState(prevInputState => ({
                   amount: newAmount,
                   title: prevInputState.title
                 }))
