@@ -28,22 +28,8 @@ function Ingredients() {
   // to get the side effects, like a response from database
   // it is executed after every component render cycle
   useEffect(() => {
-    fetch('https://react-hooks-project-5a6d8.firebaseio.com/ingredients.json').then(
-      response => response.json()
-    ).then(responseData => {
-      const loadedIngredients = [];
-      for (const key in responseData) {
-        loadedIngredients.push({
-          id: key,
-          title: responseData[key].title,
-          amount: responseData[key].amount
-        });
-      }
-      //setUserIngredients(loadedIngredients);
-    });
-    // without [] it will enter in an infinite loop decause of how useEffects work by default 
-    // [] is used so useEffects will run just when there is a change
-  }, []);
+    console.log('RENDERING INGREDIENTS', userIngredients);
+  }, [userIngredients]);
 
   const filteredIngredientsHandler = useCallback(filteredIngredients => {
     dispatch({ type: 'SET', ingredients: filteredIngredients });
