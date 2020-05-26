@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
 import IngredientForm from './IngredientForm';
-import Search from './Search';
 import IngredientList from './IngredientList';
+import ErrorModal from '../UI/ErrorModal';
+import Search from './Search';
 
 function Ingredients() {
   // using array destructuring
   const [userIngredients, setUserIngredients] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
 
   // to get the side effects, like a response from database
   // it is executed after every component render cycle
@@ -58,11 +60,19 @@ function Ingredients() {
     }).then(response => {
       setIsLoading(false);
       setUserIngredients(prevIngredients => prevIngredients.filter((ingredient) => ingredient.id !== ingredientId));
+    }).catch(error => {
+      setError('Something went wrong!');
     });
+  };
+
+  function clearError() {
+    setError(null);
+    setIsLoading(false);
   };
 
   return (
     <div className="App">
+      {error && <ErrorModal onClose={clearError}>{error}</ErrorModal>}
       <IngredientForm
         onAddIngredient={addIngredientHandler}
         loading={isLoading} />
