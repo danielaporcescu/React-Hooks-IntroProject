@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 import IngredientForm from './IngredientForm';
 import Search from './Search';
@@ -25,7 +25,11 @@ function Ingredients() {
       setUserIngredients(loadedIngredients);
     });
     // without [] it will enter in an infinite loop decause of how useEffects work by default 
-    // [] is used so useEffects will run one time
+    // [] is used so useEffects will run just when there is a change
+  }, []);
+
+  const filteredIngredientsHandler = useCallback(filteredIngredients => {
+    setUserIngredients(filteredIngredients);
   }, []);
 
   function addIngredientHandler(ingredient) {
@@ -53,7 +57,7 @@ function Ingredients() {
       <IngredientForm onAddIngredient={addIngredientHandler} />
 
       <section>
-        <Search />
+        <Search onLoadIngredients={filteredIngredientsHandler} />
         <IngredientList
           ingredients={userIngredients}
           onRemoveItem={removeIngredientHandler} />
